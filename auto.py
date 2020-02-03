@@ -17,21 +17,20 @@ def timer_runner():
 		keyboard.release('space')
 		keyboard.press('space')
 	
-# listener used for termination
-def listener_runner():
+# used for termination
+def stop_running(args):
 	global RUNNING
 	RUNNING = False
 	keyboard.release('space')
 	
 timer = threading.Thread(target=timer_runner)
-listener = threading.Thread(target=listener_runner)
 
 print('='*20)
 print('\n请在5秒以内切到游戏内蒸汽机画面……按Q结束\n')
 print('Please switch to your game window in 5 seconds...Press \'Q\' to end\n')
 print('五秒内で蒸気機関管理所に行ってください。「Q」を押してこのプログラムを止める事ができます。')
 
-listener.start()
+keyboard.on_press_key('q', stop_running)
 # wait 5 seconds before starting, give the user some time to switch the game window
 time.sleep(5)
 
@@ -41,6 +40,3 @@ if RUNNING:
 	# block until 'Q' is pressed
 	keyboard.wait('q')
 	timer.join()
-	
-listener.join()
-
